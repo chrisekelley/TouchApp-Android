@@ -20,7 +20,7 @@ I think it's neat because now it means that people who love the HTML5 style of d
 
 Clone it, open in Eclipse, and hit run. (Tested on Galaxy Nexus and Galaxy Tab 7")
 
-## how is this Android port different from the iOS version?
+## How is this Android port different from the iOS version?
 
 This version uses REST syntax for interaction with the TouchDB in order to simulate how Android developers might use it. 
 
@@ -28,13 +28,17 @@ The iOS version uses CouchCocoa framework, which is a medium-level Objective-C A
 
 ### Creating the database
 
-Android: 
+#### Android
+
+REST:
 
 ````java
 conn = sendRequest(server, "PUT", "/touchapp", null, null);
 ````
 
-The iOS version uses lower-level syntax:
+#### iOS
+
+CouchCocoa framework:
 
 ````
 CouchDatabase *database = [server databaseNamed: @"default"];
@@ -42,7 +46,7 @@ CouchDatabase *database = [server databaseNamed: @"default"];
 
 ### Creating the document and attachment
 
-#### Android:
+#### Android
 
 The Android version puts a document that already has the attachment:
 
@@ -60,7 +64,7 @@ doc1.put("_attachments", attachmentDict);
 result = (Map<String,Object>)sendBody(server, "PUT", "/touchapp/doc1", doc1);
 ````
 
-#### IOS:
+#### IOS
 
 The iOS version puts the document first, then does a revision that adds the attachment.
 
@@ -92,7 +96,7 @@ String urlPrefix = "http://" + host + ":" + Integer.toString(port) + "/";
 String attachURL = urlPrefix + "touchapp/doc1/index.html";
  ````
  
-#### IOS:
+#### IOS
 
 ````
 NSURL *attachURL = attach.unversionedURL;
