@@ -25,9 +25,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.couchbase.touchdb.TDBody;
-import com.couchbase.touchdb.TDDatabase;
 import com.couchbase.touchdb.TDServer;
-import com.couchbase.touchdb.TDStatus;
 import com.couchbase.touchdb.listener.TDListener;
 import com.couchbase.touchdb.router.TDRouter;
 import com.couchbase.touchdb.router.TDURLConnection;
@@ -60,25 +58,12 @@ public class TouchAppActivity extends Activity {
         File destination = new File(path);
         Log.d(TAG, "Checking for touchdb at " + path);
         if (!destination.exists()) {
-        	TDDatabase db = null;
-        	try {
-        		//TDDatabase db = server.getDatabaseNamed("default");
-        		db = TDDatabase.createEmptyDBAtPath(path);
-        	} catch (Exception e) {
-        		Log.e(TAG, "TouchDB fail ", e);
-        	}
-
-        	//TDBlobStore attachments = db.getAttachments();
 
         	Map<String,Object> result = null;
         	TDURLConnection conn = null;
 
         	conn = sendRequest(server, "PUT", "/touchapp", null, null);
         	result = (Map<String, Object>) parseJSONResponse(conn);
-
-        	//String dbName = db.getName();
-
-        	TDStatus status = new TDStatus();
         	String htmlString = null;
         	try {
         		htmlString = readAsset(getAssets(), "index.html");
@@ -87,38 +72,15 @@ public class TouchAppActivity extends Activity {
         	}
         	Map<String,Object> doc1 = new HashMap<String,Object>();
         	doc1.put("foo", "bar");
-        	//Map<String,Object> result = (Map<String,Object>)sendBody(server, "PUT", "/db/hello", doc1, TDStatus.CREATED, null);
-        	//        TDRevision rev = db.putRevision(new TDRevision(doc1), null, false, status);
-        	//        String docId = rev.getDocId();
-        	//        Log.d(TAG, "make rev " + rev.toString() + " docId: " + docId);
-
-        	//result = (Map<String,Object>)sendBody(server, "PUT", "/touchapp/doc1", doc1);
-        	//String revID = (String)result.get("rev");
-        	//        status = db.insertAttachmentForSequenceWithNameAndType(htmlString.getBytes(), rev.getSequence(), "index.html", "text/html", rev.getGeneration());
-        	//        Log.d(TAG, "make attachment status: " + status.toString());
-        	//        TDAttachment attachment = db.getAttachmentForSequence(rev.getSequence(), "index.html", status);
-
         	String base64 = Base64.encodeBytes(htmlString.getBytes());
         	Map<String,Object> attachment = new HashMap<String,Object>();
         	attachment.put("content_type", "text/html");
         	attachment.put("data", base64);
         	Map<String,Object> attachmentDict = new HashMap<String,Object>();
         	attachmentDict.put("index.html", attachment);
-        	//		Map<String,Object> properties = new HashMap<String,Object>();
-        	//		properties.put("foo", 1);
-        	//		properties.put("bar", false);
-        	doc1.put("_attachments", attachmentDict);
-        	//doc1.put("_rev", revID);
-        	result = (Map<String,Object>)sendBody(server, "PUT", "/touchapp/doc1", doc1);
-        	if (result != null) {
-        		String revID2 = (String)result.get("rev");
-        	}
-        	// Get the revision:
-        	//        TDRevision gotRev = db.getDocumentWithIDAndRev(rev.getDocId(), rev.getRevId(), EnumSet.noneOf(TDDatabase.TDContentOptions.class));
-        	//        Map<String,Object> gotAttachmentDict = (Map<String,Object>)gotRev.getProperties().get("_attachments");
-        	//
-        	//String attachURL = dbName + "/" + docId + "/index.html";
 
+        	doc1.put("_attachments", attachmentDict);
+        	result = (Map<String,Object>)sendBody(server, "PUT", "/touchapp/doc1", doc1);
         }
         
         String ipAddress = "0.0.0.0";
@@ -186,6 +148,15 @@ public class TouchAppActivity extends Activity {
         return result;
     }
     
+    /**
+     * This originally came from com.couchbase.touchdb.testapp.tests.Router
+     * @param server
+     * @param method
+     * @param path
+     * @param headers
+     * @param bodyObj
+     * @return
+     */
     static TDURLConnection sendRequest(TDServer server, String method, String path, Map<String,String> headers, Object bodyObj) {
         try {
             URL url = new URL("touchdb://" + path);

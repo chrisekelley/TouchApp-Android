@@ -1,0 +1,106 @@
+# Hello TouchApp-Android!
+
+This is a port of [HelloTouchApp](https://github.com/jchris/HelloTouchApp) to Android. 
+
+Some of the text from this README is from the original HelloTouchApp README.
+
+A [CouchApp](http://couchapp.org) is an HTML5 app served directly from CouchDB.
+
+[TouchDB](https://github.com/couchbaselabs/TouchDB-Android/) is a lightweight mobile database that syncs with CouchDB and offers a similar (but not identical) REST-style API.
+
+## What's a TouchApp?
+
+It's an HTML5 app served from TouchDB.
+
+## Why is it neat?
+
+I think it's neat because now it means that people who love the HTML5 style of development, and the power of CouchSync, can build HTML5 apps that sync.
+
+## How do I run it?
+
+Clone it, open in Eclipse, and hit run. (Tested on Galaxy Nexus and Galaxy Tab 7")
+
+## how is this Android port different from the iOS version?
+
+This version uses REST syntax for interaction with the TouchDB in order to simulate how Android developers might use it. 
+
+The iOS version uses CouchCocoa framework, which is a medium-level Objective-C API.
+
+### Creating the database
+
+Android: 
+
+````java
+conn = sendRequest(server, "PUT", "/touchapp", null, null);
+````
+
+The iOS version uses lower-level syntax:
+
+````
+CouchDatabase *database = [server databaseNamed: @"default"];
+````
+
+### Creating the document and attachment
+
+#### Android:
+
+The Android version puts a document that already has the attachment:
+
+````java
+Map<String,Object> doc1 = new HashMap<String,Object>();
+doc1.put("foo", "bar");
+String base64 = Base64.encodeBytes(htmlString.getBytes());
+Map<String,Object> attachment = new HashMap<String,Object>();
+attachment.put("content_type", "text/html");
+attachment.put("data", base64);
+Map<String,Object> attachmentDict = new HashMap<String,Object>();
+attachmentDict.put("index.html", attachment);
+
+doc1.put("_attachments", attachmentDict);
+result = (Map<String,Object>)sendBody(server, "PUT", "/touchapp/doc1", doc1);
+````
+
+#### IOS:
+
+The iOS version puts the document first, then does a revision that adds the attachment.
+
+````
+CouchDocument *doc = [database documentWithID:@"hello"];
+RESTOperation* op = [doc putProperties:[NSDictionary dictionaryWithObject: @"bar"
+                                                                   forKey: @"foo"]];
+[op wait]; 
+CouchRevision *rev = doc.currentRevision;
+CouchAttachment* attach = [rev createAttachmentWithName:@"index.html" type:@"text/html; charset=utf-8"];
+op = [attach PUT:[htmlString dataUsingEncoding:NSUTF8StringEncoding]];
+NSLog(@"make attachment %@",attach);
+````
+
+### Creating the URL
+
+The method that creates the attachment provides a handy unversionedURL field which is used by the app to launch the correct URL' however, 
+this must be constructed manually by the Android version.
+
+#### Android
+
+
+````java
+String ipAddress = "0.0.0.0";
+Log.d(TAG, ipAddress);
+String host = ipAddress;
+int port = 8888;
+String urlPrefix = "http://" + host + ":" + Integer.toString(port) + "/";
+String attachURL = urlPrefix + "touchapp/doc1/index.html";
+ ````
+ 
+#### IOS:
+
+````
+NSURL *attachURL = attach.unversionedURL;
+NSLog(@"attachURL %@",attachURL);
+[self.webView loadRequest:[NSURLRequest requestWithURL:attachURL]];
+````
+
+## Are there other examples?
+
+Check out [Android-Coconut-TouchDB](https://github.com/vetula/Android-Coconut-TouchDB), which is a more comprehensive CouchApp. 
+
