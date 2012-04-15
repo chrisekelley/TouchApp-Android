@@ -5,7 +5,7 @@ This is a port of [HelloTouchApp](https://github.com/jchris/HelloTouchApp) to An
 [TouchDB](https://github.com/couchbaselabs/TouchDB-Android/) is a lightweight mobile database that syncs with CouchDB and offers a similar (but not identical) REST-style API.
 
 A [CouchApp](http://couchapp.org) is an HTML5 app served directly from CouchDB. 
-A TouchApp is an HTML5 app served from TouchDB. But there really does not need to be any difference between the two. One may push a couchapp to TouchDB.
+A TouchApp is an HTML5 app served from TouchDB. But there really does not need to be any difference between the two. One may push a CouchApp to TouchDB. The community may wish to stick with the CouchApp moniker ;-)
 
 ## How is this Android port different from the iOS version?
 
