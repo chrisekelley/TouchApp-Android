@@ -1,6 +1,6 @@
 # Hello TouchApp-Android!
 
-This is a port of [HelloTouchApp](https://github.com/jchris/HelloTouchApp) to Android. 
+This is a port of [HelloTouchApp](https://github.com/jchris/HelloTouchApp) to Android. It illustrates some of the differences between the iOS and Android TouchDB implementations.
 
 Some of the text from this README is from the original HelloTouchApp README.
 
@@ -81,7 +81,7 @@ NSLog(@"make attachment %@",attach);
 
 ### Creating the URL
 
-The method that creates the attachment provides a handy unversionedURL field which is used by the app to launch the correct URL' however, 
+The method that creates the attachment provides a handy unversionedURL field which is used by the app to launch the correct URL; however, 
 this must be constructed manually by the Android version.
 
 #### Android
@@ -104,7 +104,12 @@ NSLog(@"attachURL %@",attachURL);
 [self.webView loadRequest:[NSURLRequest requestWithURL:attachURL]];
 ````
 
+## Can this be easier?
+
+If you already have a CouchApp, you could simply do "couchapp push mob" to get the couchapp into the TouchDB. 
+
 ## Are there other examples?
 
 Check out [Android-Coconut-TouchDB](https://github.com/vetula/Android-Coconut-TouchDB), which is a more comprehensive CouchApp. 
+The [TouchDB-Android Couchapp example] (http://vetula.blogspot.com/2012/03/touchdb-android-couchapp-example.html) has a bit more detail on that example.
 
