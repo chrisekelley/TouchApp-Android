@@ -2,23 +2,10 @@
 
 This is a port of [HelloTouchApp](https://github.com/jchris/HelloTouchApp) to Android. It illustrates some of the differences between the iOS and Android TouchDB implementations.
 
-Some of the text from this README is from the original HelloTouchApp README.
-
-A [CouchApp](http://couchapp.org) is an HTML5 app served directly from CouchDB.
-
 [TouchDB](https://github.com/couchbaselabs/TouchDB-Android/) is a lightweight mobile database that syncs with CouchDB and offers a similar (but not identical) REST-style API.
 
-## What's a TouchApp?
-
-It's an HTML5 app served from TouchDB.
-
-## Why is it neat?
-
-I think it's neat because now it means that people who love the HTML5 style of development, and the power of CouchSync, can build HTML5 apps that sync.
-
-## How do I run it?
-
-Clone it, open in Eclipse, and hit run. (Tested on Galaxy Nexus and Galaxy Tab 7")
+A [CouchApp](http://couchapp.org) is an HTML5 app served directly from CouchDB. 
+A TouchApp is an HTML5 app served from TouchDB. But there really does not need to be any difference between the two. One may push a couchapp to TouchDB.
 
 ## How is this Android port different from the iOS version?
 
@@ -103,6 +90,10 @@ NSURL *attachURL = attach.unversionedURL;
 NSLog(@"attachURL %@",attachURL);
 [self.webView loadRequest:[NSURLRequest requestWithURL:attachURL]];
 ````
+
+## How do I run it?
+
+Clone it, open in Eclipse, and hit run. (Tested on Galaxy Nexus and Galaxy Tab 7")
 
 ## Can this be easier?
 
